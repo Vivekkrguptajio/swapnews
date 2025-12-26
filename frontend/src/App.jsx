@@ -3,13 +3,18 @@ import Home from "./pages/Home";
 import Bookmarks from "./pages/Bookmarks";
 import Admin from "./pages/Admin";
 
+import Sidebar from "./components/Sidebar";
+
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/bookmarks" element={<Bookmarks />} />
-      <Route path="/admin" element={<Admin />} />
-    </Routes>
+    <>
+      <Sidebar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route path="/admin" element={<Admin />} />
+      </Routes>
+    </>
   );
 }
 
