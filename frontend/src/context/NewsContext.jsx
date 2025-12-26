@@ -71,6 +71,9 @@ export const NewsProvider = ({ children }) => {
         setLanguage((prev) => (prev === "en" ? "hi" : "en"));
     };
 
+    // Global Sidebar State
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     return (
         <NewsContext.Provider
             value={{
@@ -84,7 +87,12 @@ export const NewsProvider = ({ children }) => {
                 isBookmarked,
                 toggleLike,
                 isLiked,
-                handleLanguageChange
+                isLiked,
+                handleLanguageChange,
+                isSidebarOpen,
+                openSidebar: () => setIsSidebarOpen(true),
+                closeSidebar: () => setIsSidebarOpen(false),
+                toggleSidebar: () => setIsSidebarOpen(prev => !prev)
             }}
         >
             {children}

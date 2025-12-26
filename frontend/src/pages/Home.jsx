@@ -3,30 +3,47 @@ import { useNews } from "../context/NewsContext";
 import NewsCard from "../components/NewsCard";
 import Navbar from "../components/Navbar";
 import BottomBar from "../components/BottomBar";
+import NewsDetail from "../components/NewsDetail";
 import { motion } from "framer-motion";
 
 export default function Home() {
-    const { news, loading } = useNews();
+    const { news, loading, openSidebar, closeSidebar, isSidebarOpen } = useNews();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [showDetail, setShowDetail] = useState(false);
 
-    // Drag constraints
+    // Drag constraints (Vertical)
     const handleDragEnd = (event, info) => {
         const threshold = 100; // Drag distance to trigger swipe
-        if (info.offset.y < -threshold) {
-            // Swiped Up -> Next
-            if (currentIndex < news.length - 1) {
-                setCurrentIndex((prev) => prev + 1);
+
+        // Only trigger vertical swipe if horizontal movement is small (prevent diagonal accidental swipes)
+        if (Math.abs(info.offset.x) < 50) {
+            if (info.offset.y < -threshold) {
+                // Swiped Up -> Next
+                if (currentIndex < news.length - 1) {
+                    setCurrentIndex((prev) => prev + 1);
+                }
+            } else if (info.offset.y > threshold) {
+                // Swiped Down -> Prev
+                if (currentIndex > 0) {
+                    setCurrentIndex((prev) => prev - 1);
+                }
             }
-        } else if (info.offset.y > threshold) {
-            // Swiped Down -> Prev
-            if (currentIndex > 0) {
-                setCurrentIndex((prev) => prev - 1);
-            }
+        }
+    };
+
+    // Horizontal Swipe Handler (Right-to-Left for Details)
+    // Note: Left-to-Right for Sidebar is handled globally in Sidebar.jsx trigger
+    const handlePanEnd = (event, info) => {
+        // Swipe Right-to-Left (Open Details)
+        if (info.offset.x < -50 && Math.abs(info.offset.y) < 50) {
+            setShowDetail(true);
         }
     };
 
     if (loading) return <div className="h-screen flex items-center justify-center text-white bg-black">Loading News...</div>;
     if (!news || news.length === 0) return <div className="h-screen flex items-center justify-center text-white bg-black">No News Available</div>;
+
+    const currentNews = news[currentIndex];
 
     return (
         <div className="h-screen w-full bg-black relative overflow-hidden">
@@ -37,7 +54,9 @@ export default function Home() {
                     className="h-full w-full"
                     drag="y"
                     dragConstraints={{ top: 0, bottom: 0 }} // Elastic effect but snap back
+                    dragDirectionLock
                     onDragEnd={handleDragEnd}
+                    onPanEnd={handlePanEnd}
                     animate={{ y: -currentIndex * window.innerHeight }}
                     transition={{ type: "spring", damping: 30, stiffness: 300 }}
                 >
@@ -48,6 +67,42 @@ export default function Home() {
                     ))}
                 </motion.div>
             </div>
+
+            {/* 3 Dots Navigation Indicator & Controls */}
+            <div className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-2 z-[200]">
+                {/* Left Dot (Sidebar) */}
+                <button
+                    onClick={() => {
+                        setShowDetail(false);
+                        openSidebar();
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${isSidebarOpen ? "w-8 bg-red-500" : "w-2 bg-gray-500/50 hover:bg-gray-400"}`}
+                />
+
+                {/* Center Dot (Current Feed) */}
+                <button
+                    onClick={() => {
+                        closeSidebar();
+                        setShowDetail(false);
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${!isSidebarOpen && !showDetail ? "w-8 bg-red-500" : "w-2 bg-gray-500/50 hover:bg-gray-400"}`}
+                />
+
+                {/* Right Dot (Details) */}
+                <button
+                    onClick={() => {
+                        closeSidebar();
+                        setShowDetail(true);
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${showDetail ? "w-8 bg-red-500" : "w-2 bg-gray-500/50 hover:bg-gray-400"}`}
+                />
+            </div>
+
+            <NewsDetail
+                newsItem={currentNews}
+                isOpen={showDetail}
+                onClose={() => setShowDetail(false)}
+            />
 
             <BottomBar />
         </div>
