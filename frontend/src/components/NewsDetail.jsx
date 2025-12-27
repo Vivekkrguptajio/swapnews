@@ -69,12 +69,7 @@ export default function NewsDetail({ newsItem, isOpen, onClose }) {
                                 </p>
                             </div>
 
-                            <a
-                                href="#"
-                                className="mt-8 flex items-center justify-center gap-2 w-full bg-red-600 text-white p-3 rounded-lg font-bold hover:bg-red-700 transition"
-                            >
-                                <Globe size={18} /> Read Full Article
-                            </a>
+                            {/* Button Removed */}
                         </div>
                     </motion.div>
                 </div>
