@@ -75,10 +75,16 @@ export default function Home() {
                         <NewsCard newsItem={item} index={index} currentIndex={currentIndex} />
                     </div>
                 ))}
+
+                {/* Empty snap point to trigger End of Feed card */}
+                <div
+                    data-index={news.length}
+                    className="news-item h-full w-full snap-start relative bg-black"
+                />
             </div>
 
             {/* End of Feed Card - Separate Overlay */}
-            {currentIndex === news.length - 1 && (
+            {currentIndex >= news.length && (
                 <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-[100]">
                     <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 flex flex-col items-center gap-4 pointer-events-auto shadow-2xl">
                         <ChevronDown className="animate-bounce text-white/50" size={32} />

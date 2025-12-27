@@ -34,112 +34,104 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 <img
                     src={newsItem.imageUrl}
                     alt={newsItem.title}
-                    className="w-full h-full object-cover opacity-90"
+                    className="w-full h-full object-cover"
                     loading={index === 0 ? "eager" : "lazy"}
                 />
-                {/* Gradient Overlays for Readability */}
-                <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
-                <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
+                {/* Gradient Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30 pointer-events-none" />
             </div>
 
-            {/* Right Side Actions (Reels Style - Minimal) */}
-            <div className="absolute right-4 bottom-24 flex flex-col items-center gap-6 z-[20]">
-                {/* Like Button */}
+            {/* Top Category Badge */}
+            <div className="absolute top-6 left-4 z-10">
+                <span className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded uppercase tracking-wide">
+                    {newsItem.category || "URBAN"}
+                </span>
+            </div>
+
+            {/* Right Side Actions (Minimal) */}
+            <div className="absolute right-3 bottom-32 flex flex-col items-center gap-5 z-[20]">
+                {/* Like */}
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={() => toggleLike(newsItem)}
-                        className="p-2 transition-transform active:scale-75"
+                        className="p-2 transition-transform active:scale-90"
                     >
                         <Heart
-                            size={32}
-                            className={`transition-colors drop-shadow-md ${liked ? "fill-red-500 text-red-500" : "text-white"}`}
-                            strokeWidth={liked ? 0 : 2}
+                            size={28}
+                            className={`filter drop-shadow-lg transition-all ${liked ? "fill-red-500 text-red-500" : "text-white"}`}
+                            strokeWidth={liked ? 0 : 2.5}
                         />
                     </button>
-                    <span className="text-white text-xs font-medium drop-shadow-md">
+                    <span className="text-white text-xs font-semibold drop-shadow-md">
                         {liked ? "1.2k" : "Like"}
                     </span>
                 </div>
 
-                {/* Comment Button */}
-                <div className="flex flex-col items-center gap-1">
-                    <button className="p-2 transition-transform active:scale-75">
-                        <MessageCircle size={32} className="text-white drop-shadow-md" strokeWidth={2} />
-                    </button>
-                    <span className="text-white text-xs font-medium drop-shadow-md">234</span>
-                </div>
-
-                {/* Bookmark Button */}
+                {/* Bookmark */}
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={() => toggleBookmark(newsItem)}
-                        className="p-2 transition-transform active:scale-75"
+                        className="p-2 transition-transform active:scale-90"
                     >
                         <Bookmark
-                            size={32}
-                            className={`transition-colors drop-shadow-md ${bookmarked ? "fill-white text-white" : "text-white"}`}
-                            strokeWidth={2}
+                            size={28}
+                            className={`filter drop-shadow-lg transition-all ${bookmarked ? "fill-white text-white" : "text-white"}`}
+                            strokeWidth={2.5}
                         />
                     </button>
-                    <span className="text-white text-xs font-medium drop-shadow-md">Save</span>
+                    <span className="text-white text-xs font-semibold drop-shadow-md">Save</span>
                 </div>
 
-                {/* Share Button */}
+                {/* Share */}
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={handleShare}
-                        className="p-2 transition-transform active:scale-75"
+                        className="p-2 transition-transform active:scale-90"
                     >
-                        <Share2 size={32} className="text-white drop-shadow-md" strokeWidth={2} />
+                        <Share2 size={28} className="text-white filter drop-shadow-lg" strokeWidth={2.5} />
                     </button>
-                    <span className="text-white text-xs font-medium drop-shadow-md">Share</span>
+                    <span className="text-white text-xs font-semibold drop-shadow-md">Share</span>
                 </div>
 
-                {/* Language Toggle */}
-                <div className="flex flex-col items-center gap-1 pt-2">
-                    <button
-                        onClick={handleLanguageChange}
-                        className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center bg-black/10 backdrop-blur-sm text-white font-bold text-xs shadow-md"
-                    >
-                        {language === "en" ? "EN" : "HI"}
+                {/* More Options */}
+                <div className="flex flex-col items-center gap-1">
+                    <button className="p-2 transition-transform active:scale-90">
+                        <MoreHorizontal size={28} className="text-white filter drop-shadow-lg" strokeWidth={2.5} />
                     </button>
                 </div>
             </div>
 
-            {/* Bottom Info Content */}
-            <div className="absolute left-0 bottom-0 w-full p-4 pb-20 z-[15] pr-20 flex flex-col gap-3">
-
-                {/* User/Source Info */}
-                <div className="flex items-center gap-2 mb-1">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 to-red-500 p-[2px]">
-                        <div className="w-full h-full rounded-full bg-black flex items-center justify-center text-[10px] font-bold text-white">
-                            SN
-                        </div>
-                    </div>
-                    <span className="text-white font-semibold text-sm drop-shadow-md">SwipeNews</span>
-                    <span className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-medium text-white border border-white/10">
-                        Follow
-                    </span>
-                </div>
+            {/* Bottom Content - YouTube Shorts Style */}
+            <div className="absolute left-0 bottom-0 w-full p-4 pb-24 z-[15] pr-20">
 
                 {/* Title */}
-                <h2 className="text-white text-lg font-bold leading-tight line-clamp-2 drop-shadow-lg font-sans">
+                <h2 className="text-white text-xl font-bold leading-tight mb-3 drop-shadow-lg">
                     {newsItem.title}
                 </h2>
 
-                {/* Description (Collapsed by default logic handles 'more') */}
-                <div className="text-white/90 text-sm font-light leading-snug line-clamp-2 drop-shadow-md">
-                    {newsItem.description}
-                    <span className="font-semibold text-white ml-1 opacity-100">... more</span>
+                {/* Source + Time */}
+                <div className="flex items-center gap-2 text-xs text-white/80 mb-3 uppercase tracking-wide font-medium">
+                    <span>URBAN CHRONICLE</span>
+                    <span>•</span>
+                    <span>2 HOURS AGO</span>
                 </div>
 
-                {/* Music/Tag line */}
-                <div className="flex items-center gap-2 mt-1 opacity-80">
-                    <div className="flex items-center gap-1 px-3 py-1 bg-white/10 rounded-full border border-white/5 backdrop-blur-sm">
-                        <span className="text-[10px] text-white font-medium uppercase tracking-wider">
-                            {newsItem.category || "Trending"}
-                        </span>
+                {/* Description */}
+                <p className="text-white/90 text-sm leading-relaxed mb-4 line-clamp-2">
+                    {newsItem.description}
+                </p>
+
+                {/* Profile Section with Follow Button */}
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        SN
                     </div>
+                    <div className="flex-1">
+                        <p className="text-white font-semibold text-sm">SwipeNews</p>
+                    </div>
+                    <button className="px-4 py-1.5 bg-white text-black text-xs font-bold rounded-full hover:bg-white/90 transition-colors">
+                        Follow
+                    </button>
                 </div>
             </div>
         </div>
