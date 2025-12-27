@@ -43,6 +43,21 @@ router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Check for Admin Login (Hardcoded)
+        if (email === process.env.ADMIN_USER && password === process.env.ADMIN_PASSWORD) {
+            const token = jwt.sign({ id: "000000000000000000000001", isAdmin: true }, process.env.JWT_SECRET || "fallbacksecret", { expiresIn: "7d" });
+            return res.json({
+                token,
+                user: {
+                    _id: "000000000000000000000001",
+                    username: "Admin",
+                    email: email,
+                    isAdmin: true,
+                    bookmarks: []
+                }
+            });
+        }
+
         // Find user
         const user = await User.findOne({ email });
         if (!user) {

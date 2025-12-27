@@ -1,18 +1,36 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Bookmark, ShieldCheck, X, LogIn, UserPlus, LogOut } from "lucide-react";
+import { Home, Bookmark, ShieldCheck, X, LogIn, UserPlus, LogOut, Clock } from "lucide-react";
 import { useNews } from "../context/NewsContext";
+import { useState, useEffect } from "react";
+import api from "../utils/api";
 
 export default function Sidebar() {
     const { isSidebarOpen, closeSidebar, openSidebar, user, logout } = useNews();
     const location = useLocation();
+    const [publisherStatus, setPublisherStatus] = useState("none");
+
+    useEffect(() => {
+        if (user) {
+            api.get(`/publisher/status/${user.id || user._id}`)
+                .then(res => setPublisherStatus(res.data.status))
+                .catch(err => console.error("Status fetch error", err));
+        }
+    }, [user, isSidebarOpen]); // Fetch when sidebar opens too in case updates happened
 
     const isActive = (path) => location.pathname === path;
 
     const navItems = [
         { path: "/", label: "Home", icon: <Home size={24} /> },
-        ...(user ? [{ path: "/bookmarks", label: "Saved", icon: <Bookmark size={24} /> }] : []),
-        { path: "/admin", label: "Admin", icon: <ShieldCheck size={24} /> },
+        ...(user ? [
+            { path: "/bookmarks", label: "Saved", icon: <Bookmark size={24} /> },
+            {
+                path: publisherStatus === "pending" ? "#" : "/publisher-guidelines",
+                label: publisherStatus === "pending" ? "Application Pending" : "Become Publisher",
+                icon: publisherStatus === "pending" ? <Clock size={24} className="text-yellow-500" /> : <ShieldCheck size={24} />,
+                disabled: publisherStatus === "pending"
+            }
+        ] : []),
     ];
 
     return (

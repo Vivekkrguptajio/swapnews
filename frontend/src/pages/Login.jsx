@@ -14,7 +14,11 @@ export default function Login() {
         setError("");
         const res = await login(email, password);
         if (res.success) {
-            navigate("/");
+            if (res.user?.isAdmin) {
+                navigate("/admin");
+            } else {
+                navigate("/");
+            }
         } else {
             setError(res.message);
         }

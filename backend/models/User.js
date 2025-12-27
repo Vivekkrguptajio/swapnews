@@ -23,7 +23,11 @@ const userSchema = new mongoose.Schema({
     bookmarks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "News"
-    }]
+    }],
+    isPublisher: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true
 });

@@ -95,7 +95,7 @@ export const NewsProvider = ({ children }) => {
             localStorage.setItem("user", JSON.stringify(data.user));
             localStorage.setItem("token", data.token);
             setUser(data.user);
-            return { success: true };
+            return { success: true, user: data.user };
         } catch (error) {
             console.error("Login failed:", error);
             return { success: false, message: error.response?.data?.message || "Login failed" };
@@ -130,7 +130,6 @@ export const NewsProvider = ({ children }) => {
                 toggleBookmark,
                 isBookmarked,
                 toggleLike,
-                isLiked,
                 isLiked,
                 handleLanguageChange,
                 isSidebarOpen,
