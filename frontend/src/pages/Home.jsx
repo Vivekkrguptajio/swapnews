@@ -71,14 +71,14 @@ export default function Home() {
             {/* Scroll Snap Container */}
             <div
                 ref={containerRef}
-                className="h-full w-full overflow-y-scroll snap-y snap-mandatory snap-always scroll-smooth no-scrollbar"
+                className="h-full w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar"
                 onScroll={handleScroll}
             >
                 {news.map((item, index) => (
                     <div
                         key={item._id}
                         data-index={index}
-                        className="news-item h-full w-full snap-start relative bg-black"
+                        className="news-item h-full w-full snap-start snap-always relative bg-black"
                     >
                         <NewsCard newsItem={item} index={index} currentIndex={currentIndex} />
                     </div>
@@ -87,7 +87,7 @@ export default function Home() {
                 {/* Empty snap point to trigger End of Feed card */}
                 <div
                     data-index={news.length}
-                    className="news-item h-full w-full snap-start relative bg-black"
+                    className="news-item h-full w-full snap-start snap-always relative bg-black"
                 />
             </div>
 
