@@ -7,7 +7,7 @@ export default function BottomBar() {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <div className="hidden md:flex fixed bottom-0 w-full z-50 bg-black border-t border-white/10 px-6 py-3 justify-between items-center pb-6">
+        <div className="hidden md:flex fixed bottom-0 w-full z-10 bg-black border-t border-white/10 px-6 py-3 justify-between items-center pb-6">
             <Link to="/" className={`flex flex-col items-center ${isActive("/") ? "text-red-500" : "text-gray-400"}`}>
                 <Home size={24} />
                 <span className="text-xs mt-1">Home</span>

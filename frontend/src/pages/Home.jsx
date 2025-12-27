@@ -60,7 +60,7 @@ export default function Home() {
         <div className="h-[100dvh] w-full bg-black relative">
             <Navbar />
 
-            {/* Scroll Snack Container */}
+            {/* Scroll Snap Container */}
             <div
                 ref={containerRef}
                 className="h-full w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar"
@@ -75,57 +75,67 @@ export default function Home() {
                         <NewsCard newsItem={item} index={index} currentIndex={currentIndex} />
                     </div>
                 ))}
-
-                {/* Loading/Refresh Indicator at bottom */}
-                <div className="h-24 w-full flex flex-col items-center justify-center snap-start text-white/50">
-                    <ChevronDown className="animate-bounce mb-2" />
-                    <span className="text-xs uppercase tracking-widest">End of Feed</span>
-                    <button
-                        onClick={() => {
-                            setIsRefreshing(true);
-                            fetchNews().finally(() => setIsRefreshing(false));
-                        }}
-                        className="mt-4 px-6 py-2 bg-white/10 rounded-full text-xs font-bold hover:bg-white/20 transition-colors"
-                    >
-                        {isRefreshing ? "Refreshing..." : "Tap to Refresh"}
-                    </button>
-                </div>
             </div>
 
-            {/* 3 Dots Navigation - Always Visible */}
-            <div className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-3 z-[200] pb-safe pointer-events-none">
-                <div className="flex gap-3 pointer-events-auto">
+            {/* End of Feed Card - Separate Overlay */}
+            {currentIndex === news.length - 1 && (
+                <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-[100]">
+                    <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 flex flex-col items-center gap-4 pointer-events-auto shadow-2xl">
+                        <ChevronDown className="animate-bounce text-white/50" size={32} />
+                        <span className="text-sm font-medium text-white/70 uppercase tracking-widest">End of Feed</span>
+                        <button
+                            onClick={() => {
+                                setIsRefreshing(true);
+                                fetchNews().finally(() => setIsRefreshing(false));
+                            }}
+                            className="px-8 py-3 bg-red-500 hover:bg-red-600 rounded-full text-sm font-bold text-white transition-colors shadow-lg"
+                        >
+                            {isRefreshing ? "Refreshing..." : "Tap to Refresh"}
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* 3 Dots Navigation - Always Visible & Top Layer */}
+            <div className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-3 z-[9999] pb-safe pointer-events-none">
+                <div className="flex gap-4 pointer-events-auto bg-black/20 backdrop-blur-sm px-6 py-3 rounded-full border border-white/5">
                     {/* Left Dot (Sidebar) */}
                     <button
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('Left dot clicked - Opening sidebar');
                             setShowDetail(false);
                             openSidebar();
                         }}
-                        className={`min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-300`}
+                        className="flex items-center justify-center group min-w-[44px] min-h-[44px] cursor-pointer"
                     >
-                        <span className={`h-3 rounded-full transition-all duration-300 shadow-lg ${isSidebarOpen ? "w-10 bg-red-500" : "w-3 bg-white/50"}`} />
+                        <span className={`h-2 rounded-full transition-all duration-300 group-hover:bg-white/80 ${isSidebarOpen ? "w-8 bg-red-500" : "w-2 bg-white/40"}`} />
                     </button>
 
                     {/* Center Dot (Current Feed) */}
                     <button
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('Center dot clicked - Closing all');
                             closeSidebar();
                             setShowDetail(false);
                         }}
-                        className={`min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-300`}
+                        className="flex items-center justify-center group min-w-[44px] min-h-[44px] cursor-pointer"
                     >
-                        <span className={`h-3 rounded-full transition-all duration-300 shadow-lg ${!isSidebarOpen && !showDetail ? "w-10 bg-red-500" : "w-3 bg-white/50"}`} />
+                        <span className={`h-2 rounded-full transition-all duration-300 group-hover:bg-white/80 ${!isSidebarOpen && !showDetail ? "w-8 bg-red-500" : "w-2 bg-white/40"}`} />
                     </button>
 
                     {/* Right Dot (Details) */}
                     <button
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('Right dot clicked - Opening details');
                             closeSidebar();
                             setShowDetail(true);
                         }}
-                        className={`min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-300`}
+                        className="flex items-center justify-center group min-w-[44px] min-h-[44px] cursor-pointer"
                     >
-                        <span className={`h-3 rounded-full transition-all duration-300 shadow-lg ${showDetail ? "w-10 bg-red-500" : "w-3 bg-white/50"}`} />
+                        <span className={`h-2 rounded-full transition-all duration-300 group-hover:bg-white/80 ${showDetail ? "w-8 bg-red-500" : "w-2 bg-white/40"}`} />
                     </button>
                 </div>
             </div>

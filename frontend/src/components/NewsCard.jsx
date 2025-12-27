@@ -42,17 +42,17 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
             </div>
 
-            {/* Right Side Actions (Reels Style) */}
+            {/* Right Side Actions (Reels Style - Minimal) */}
             <div className="absolute right-4 bottom-24 flex flex-col items-center gap-6 z-[20]">
                 {/* Like Button */}
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={() => toggleLike(newsItem)}
-                        className="p-3 transition-transform active:scale-75"
+                        className="p-2 transition-transform active:scale-75"
                     >
                         <Heart
                             size={32}
-                            className={`transition-colors drop-shadow-lg ${liked ? "fill-red-500 text-red-500" : "text-white"}`}
+                            className={`transition-colors drop-shadow-md ${liked ? "fill-red-500 text-red-500" : "text-white"}`}
                             strokeWidth={liked ? 0 : 2}
                         />
                     </button>
@@ -63,8 +63,8 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
 
                 {/* Comment Button */}
                 <div className="flex flex-col items-center gap-1">
-                    <button className="p-3 transition-transform active:scale-75">
-                        <MessageCircle size={32} className="text-white drop-shadow-lg" strokeWidth={2} />
+                    <button className="p-2 transition-transform active:scale-75">
+                        <MessageCircle size={32} className="text-white drop-shadow-md" strokeWidth={2} />
                     </button>
                     <span className="text-white text-xs font-medium drop-shadow-md">234</span>
                 </div>
@@ -73,12 +73,12 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={() => toggleBookmark(newsItem)}
-                        className="p-3 transition-transform active:scale-75"
+                        className="p-2 transition-transform active:scale-75"
                     >
                         <Bookmark
                             size={32}
-                            className={`transition-colors drop-shadow-lg ${bookmarked ? "fill-yellow-400 text-yellow-400" : "text-white"}`}
-                            strokeWidth={bookmarked ? 0 : 2}
+                            className={`transition-colors drop-shadow-md ${bookmarked ? "fill-white text-white" : "text-white"}`}
+                            strokeWidth={2}
                         />
                     </button>
                     <span className="text-white text-xs font-medium drop-shadow-md">Save</span>
@@ -88,9 +88,9 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={handleShare}
-                        className="p-3 transition-transform active:scale-75"
+                        className="p-2 transition-transform active:scale-75"
                     >
-                        <Share2 size={32} className="text-white drop-shadow-lg" strokeWidth={2} />
+                        <Share2 size={32} className="text-white drop-shadow-md" strokeWidth={2} />
                     </button>
                     <span className="text-white text-xs font-medium drop-shadow-md">Share</span>
                 </div>
@@ -99,7 +99,7 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 <div className="flex flex-col items-center gap-1 pt-2">
                     <button
                         onClick={handleLanguageChange}
-                        className="w-10 h-10 rounded-full border-2 border-white/30 flex items-center justify-center bg-black/20 backdrop-blur-sm text-white font-bold text-xs"
+                        className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center bg-black/10 backdrop-blur-sm text-white font-bold text-xs shadow-md"
                     >
                         {language === "en" ? "EN" : "HI"}
                     </button>

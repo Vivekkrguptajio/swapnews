@@ -74,6 +74,9 @@ export const NewsProvider = ({ children }) => {
     // Global Sidebar State
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+    // Global Detail Panel State
+    const [showDetail, setShowDetail] = useState(false);
+
     return (
         <NewsContext.Provider
             value={{
@@ -92,7 +95,9 @@ export const NewsProvider = ({ children }) => {
                 isSidebarOpen,
                 openSidebar: () => setIsSidebarOpen(true),
                 closeSidebar: () => setIsSidebarOpen(false),
-                toggleSidebar: () => setIsSidebarOpen(prev => !prev)
+                toggleSidebar: () => setIsSidebarOpen(prev => !prev),
+                showDetail,
+                setShowDetail
             }}
         >
             {children}
