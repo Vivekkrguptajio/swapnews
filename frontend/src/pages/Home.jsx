@@ -7,9 +7,9 @@ import NewsDetail from "../components/NewsDetail";
 import { motion } from "framer-motion";
 
 export default function Home() {
-    const { news, loading, openSidebar, closeSidebar, isSidebarOpen } = useNews();
+    const { news, loading, openSidebar, closeSidebar, isSidebarOpen, showDetail, setShowDetail, fetchNews } = useNews();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [showDetail, setShowDetail] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     // Drag constraints (Vertical) - Velocity-based detection
     const handleDragEnd = (event, info) => {
@@ -25,6 +25,14 @@ export default function Home() {
                 // Swiped Up or Flicked Up -> Next
                 if (currentIndex < news.length - 1) {
                     setCurrentIndex((prev) => prev + 1);
+                } else {
+                    // Last Card -> Trigger Refresh
+                    setIsRefreshing(true);
+                    setTimeout(async () => {
+                        await fetchNews();
+                        setCurrentIndex(0);
+                        setIsRefreshing(false);
+                    }, 1500); // 1.5s artificial delay for "loading" feel
                 }
             } else if (info.offset.y > 0 || info.velocity.y > velocityThreshold) {
                 // Swiped Down or Flicked Down -> Prev
@@ -53,6 +61,14 @@ export default function Home() {
     return (
         <div className="h-screen w-full bg-black relative overflow-hidden">
             <Navbar />
+
+            {/* Refresh Loader Overlay */}
+            {isRefreshing && (
+                <div className="absolute inset-0 z-[300] bg-black/80 backdrop-blur-sm flex flex-col justify-center items-center text-white">
+                    <div className="w-12 h-12 border-4 border-white/20 border-t-red-500 rounded-full animate-spin mb-4"></div>
+                    <p className="text-lg font-medium tracking-widest animate-pulse">REFRESHING...</p>
+                </div>
+            )}
 
             <div className="h-full w-full relative">
                 <motion.div
