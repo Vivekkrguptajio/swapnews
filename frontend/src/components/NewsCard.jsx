@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { Share2, Bookmark, Heart, MessageCircle, MoreHorizontal } from "lucide-react";
 import { useNews } from "../context/NewsContext";
+import { useNavigate } from "react-router-dom";
 
 export default function NewsCard({ newsItem, index, currentIndex }) {
-    const { toggleBookmark, isBookmarked, toggleLike, isLiked, language, handleLanguageChange } = useNews();
+    const { toggleBookmark, isBookmarked, toggleLike, isLiked, language, handleLanguageChange, user } = useNews();
+    const navigate = useNavigate();
     const bookmarked = isBookmarked(newsItem._id);
     const liked = isLiked(newsItem._id);
 
@@ -81,20 +83,22 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                     </span>
                 </div>
 
-                {/* Bookmark Button */}
-                <div className="flex flex-col items-center gap-1">
-                    <button
-                        onClick={() => toggleBookmark(newsItem)}
-                        className="p-2 transition-transform active:scale-75"
-                    >
-                        <Bookmark
-                            size={30}
-                            className={`transition-colors drop-shadow-md ${bookmarked ? "fill-white text-white" : "text-white"}`}
-                            strokeWidth={2}
-                        />
-                    </button>
-                    <span className="text-white text-xs font-medium drop-shadow-md">Save</span>
-                </div>
+                {/* Bookmark Button - Only visible if logged in */}
+                {user && (
+                    <div className="flex flex-col items-center gap-1">
+                        <button
+                            onClick={() => toggleBookmark(newsItem)}
+                            className="p-2 transition-transform active:scale-75"
+                        >
+                            <Bookmark
+                                size={30}
+                                className={`transition-colors drop-shadow-md ${bookmarked ? "fill-white text-white" : "text-white"}`}
+                                strokeWidth={2}
+                            />
+                        </button>
+                        <span className="text-white text-xs font-medium drop-shadow-md">Save</span>
+                    </div>
+                )}
 
                 {/* Share Button */}
                 <div className="flex flex-col items-center gap-1">
@@ -131,9 +135,11 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                     <div className="flex-1">
                         <p className="text-white font-semibold text-sm drop-shadow-md">SwipeNews</p>
                     </div>
-                    <button className="px-5 py-1.5 bg-white text-black text-xs font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg">
-                        Follow
-                    </button>
+                    {user && (
+                        <button className="px-5 py-1.5 bg-white text-black text-xs font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg">
+                            Follow
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

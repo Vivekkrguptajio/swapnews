@@ -26,7 +26,10 @@ app.get("/", (req, res) => {
 
 /* ===== Routes ===== */
 const newsRoutes = require("./routes/news");
+const authRoutes = require("./routes/auth");
+
 app.use("/api/news", newsRoutes);
+app.use("/api/auth", authRoutes);
 
 /* ===== Server Start ===== */
 const PORT = process.env.PORT || 5000;

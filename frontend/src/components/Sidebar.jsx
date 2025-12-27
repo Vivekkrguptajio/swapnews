@@ -1,17 +1,17 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Bookmark, ShieldCheck, X } from "lucide-react";
+import { Home, Bookmark, ShieldCheck, X, LogIn, UserPlus, LogOut } from "lucide-react";
 import { useNews } from "../context/NewsContext";
 
 export default function Sidebar() {
-    const { isSidebarOpen, closeSidebar, openSidebar } = useNews();
+    const { isSidebarOpen, closeSidebar, openSidebar, user, logout } = useNews();
     const location = useLocation();
 
     const isActive = (path) => location.pathname === path;
 
     const navItems = [
         { path: "/", label: "Home", icon: <Home size={24} /> },
-        { path: "/bookmarks", label: "Saved", icon: <Bookmark size={24} /> },
+        ...(user ? [{ path: "/bookmarks", label: "Saved", icon: <Bookmark size={24} /> }] : []),
         { path: "/admin", label: "Admin", icon: <ShieldCheck size={24} /> },
     ];
 
@@ -74,6 +74,48 @@ export default function Sidebar() {
                                         <span className="font-medium">{item.label}</span>
                                     </Link>
                                 ))}
+
+                                {/* Divider */}
+                                <div className="h-px bg-white/10 my-2 mx-3" />
+
+                                {/* Auth Section */}
+                                {user ? (
+                                    <>
+                                        <div className="px-3 py-2">
+                                            <p className="text-sm text-gray-500">Logged in as</p>
+                                            <p className="text-white font-bold truncate">@{user.username || user.email}</p>
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                logout();
+                                                closeSidebar();
+                                            }}
+                                            className="flex items-center gap-3 p-3 rounded-lg text-red-500 hover:bg-red-500/10 transition-colors w-full text-left"
+                                        >
+                                            <LogOut size={24} />
+                                            <span className="font-medium">Logout</span>
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            to="/login"
+                                            onClick={closeSidebar}
+                                            className="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
+                                        >
+                                            <LogIn size={24} />
+                                            <span className="font-medium">Log In</span>
+                                        </Link>
+                                        <Link
+                                            to="/signup"
+                                            onClick={closeSidebar}
+                                            className="flex items-center gap-3 p-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
+                                        >
+                                            <UserPlus size={24} />
+                                            <span className="font-medium">Sign Up</span>
+                                        </Link>
+                                    </>
+                                )}
                             </div>
                         </motion.div>
                     </>

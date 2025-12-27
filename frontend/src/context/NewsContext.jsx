@@ -75,7 +75,48 @@ export const NewsProvider = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     // Global Detail Panel State
+    // Global Detail Panel State
     const [showDetail, setShowDetail] = useState(false);
+
+    // Auth State
+    const [user, setUser] = useState(null);
+
+    // Check for logged in user on mount
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
+    const login = async (email, password) => {
+        try {
+            const { data } = await api.post("/auth/login", { email, password });
+            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("token", data.token);
+            setUser(data.user);
+            return { success: true };
+        } catch (error) {
+            console.error("Login failed:", error);
+            return { success: false, message: error.response?.data?.message || "Login failed" };
+        }
+    };
+
+    const register = async (username, email, password) => {
+        try {
+            await api.post("/auth/signup", { username, email, password });
+            return { success: true };
+        } catch (error) {
+            console.error("Registration failed:", error);
+            return { success: false, message: error.response?.data?.message || "Registration failed" };
+        }
+    };
+
+    const logout = () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        setUser(null);
+    };
 
     return (
         <NewsContext.Provider
@@ -97,7 +138,11 @@ export const NewsProvider = ({ children }) => {
                 closeSidebar: () => setIsSidebarOpen(false),
                 toggleSidebar: () => setIsSidebarOpen(prev => !prev),
                 showDetail,
-                setShowDetail
+                setShowDetail,
+                user,
+                login,
+                register,
+                logout
             }}
         >
             {children}
