@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNews } from "../context/NewsContext";
 import NewsCard from "../components/NewsCard";
+import SkeletonNewsCard from "../components/SkeletonNewsCard";
 import Navbar from "../components/Navbar";
 import BottomBar from "../components/BottomBar";
 import NewsDetail from "../components/NewsDetail";
@@ -51,7 +52,14 @@ export default function Home() {
         // but native scroll snap usually handles physics well.
     };
 
-    if (loading) return <div className="h-[100dvh] w-full flex items-center justify-center bg-black text-white">Loading...</div>;
+    if (loading) return (
+        <div className="h-[100dvh] w-full bg-black relative">
+            <Navbar />
+            <SkeletonNewsCard />
+            <BottomBar />
+        </div>
+    );
+
     if (!news || news.length === 0) return <div className="h-[100dvh] w-full flex items-center justify-center bg-black text-white">No News Available</div>;
 
     const currentNews = news[currentIndex];
@@ -63,7 +71,7 @@ export default function Home() {
             {/* Scroll Snap Container */}
             <div
                 ref={containerRef}
-                className="h-full w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar"
+                className="h-full w-full overflow-y-scroll snap-y snap-mandatory snap-always scroll-smooth no-scrollbar"
                 onScroll={handleScroll}
             >
                 {news.map((item, index) => (
