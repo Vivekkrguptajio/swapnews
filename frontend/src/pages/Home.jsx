@@ -13,7 +13,7 @@ export default function Home() {
 
     // Drag constraints (Vertical)
     const handleDragEnd = (event, info) => {
-        const threshold = 100; // Drag distance to trigger swipe
+        const threshold = 50; // Reduced for better mobile sensitivity (was 80px)
 
         // Only trigger vertical swipe if horizontal movement is small (prevent diagonal accidental swipes)
         if (Math.abs(info.offset.x) < 50) {
@@ -34,8 +34,8 @@ export default function Home() {
     // Horizontal Swipe Handler (Right-to-Left for Details)
     // Note: Left-to-Right for Sidebar is handled globally in Sidebar.jsx trigger
     const handlePanEnd = (event, info) => {
-        // Swipe Right-to-Left (Open Details)
-        if (info.offset.x < -50 && Math.abs(info.offset.y) < 50) {
+        // Swipe Right-to-Left (Open Details) - reduced threshold for mobile
+        if (info.offset.x < -60 && Math.abs(info.offset.y) < 50) {
             setShowDetail(true);
         }
     };
@@ -51,17 +51,25 @@ export default function Home() {
 
             <div className="h-full w-full relative">
                 <motion.div
-                    className="h-full w-full"
+                    className="h-full w-full hw-accelerate"
                     drag="y"
-                    dragConstraints={{ top: 0, bottom: 0 }} // Elastic effect but snap back
+                    dragConstraints={{ top: 0, bottom: 0 }}
+                    dragElastic={0.2}
+                    dragMomentum={false}
                     dragDirectionLock
                     onDragEnd={handleDragEnd}
                     onPanEnd={handlePanEnd}
                     animate={{ y: -currentIndex * window.innerHeight }}
-                    transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                    transition={{
+                        type: "spring",
+                        damping: 35,
+                        stiffness: 400,
+                        mass: 0.5,
+                        restDelta: 0.01
+                    }}
                 >
                     {news.map((item, index) => (
-                        <div key={item._id} className="h-screen w-full relative">
+                        <div key={item._id} className="h-screen w-full relative hw-accelerate">
                             <NewsCard newsItem={item} index={index} currentIndex={currentIndex} />
                         </div>
                     ))}
@@ -69,15 +77,18 @@ export default function Home() {
             </div>
 
             {/* 3 Dots Navigation Indicator & Controls */}
-            <div className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-2 z-[200]">
+            <div className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-3 z-[200] pb-safe">
                 {/* Left Dot (Sidebar) */}
                 <button
                     onClick={() => {
                         setShowDetail(false);
                         openSidebar();
                     }}
-                    className={`h-2 rounded-full transition-all duration-300 ${isSidebarOpen ? "w-8 bg-red-500" : "w-2 bg-gray-500/50 hover:bg-gray-400"}`}
-                />
+                    aria-label="Open sidebar"
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-300`}
+                >
+                    <span className={`h-3 rounded-full transition-all duration-300 ${isSidebarOpen ? "w-10 bg-red-500" : "w-3 bg-gray-500/50"}`} />
+                </button>
 
                 {/* Center Dot (Current Feed) */}
                 <button
@@ -85,8 +96,11 @@ export default function Home() {
                         closeSidebar();
                         setShowDetail(false);
                     }}
-                    className={`h-2 rounded-full transition-all duration-300 ${!isSidebarOpen && !showDetail ? "w-8 bg-red-500" : "w-2 bg-gray-500/50 hover:bg-gray-400"}`}
-                />
+                    aria-label="Return to feed"
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-300`}
+                >
+                    <span className={`h-3 rounded-full transition-all duration-300 ${!isSidebarOpen && !showDetail ? "w-10 bg-red-500" : "w-3 bg-gray-500/50"}`} />
+                </button>
 
                 {/* Right Dot (Details) */}
                 <button
@@ -94,8 +108,11 @@ export default function Home() {
                         closeSidebar();
                         setShowDetail(true);
                     }}
-                    className={`h-2 rounded-full transition-all duration-300 ${showDetail ? "w-8 bg-red-500" : "w-2 bg-gray-500/50 hover:bg-gray-400"}`}
-                />
+                    aria-label="View details"
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center transition-all duration-300`}
+                >
+                    <span className={`h-3 rounded-full transition-all duration-300 ${showDetail ? "w-10 bg-red-500" : "w-3 bg-gray-500/50"}`} />
+                </button>
             </div>
 
             <NewsDetail

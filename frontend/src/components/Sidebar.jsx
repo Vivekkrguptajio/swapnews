@@ -46,7 +46,7 @@ export default function Sidebar() {
                             animate={{ x: 0 }}
                             exit={{ x: "-100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 300 }} // Smooth transition
-                            className="fixed top-0 left-0 h-full w-80 bg-gray-900 border-r border-white/10 z-50 flex flex-col shadow-2xl"
+                            className="fixed top-0 left-0 h-full w-full max-w-xs sm:w-80 bg-gray-900 border-r border-white/10 z-50 flex flex-col shadow-2xl"
                         >
                             <div className="p-4 border-b border-white/10 flex justify-between items-center">
                                 <h2 className="text-xl font-bold text-white">

@@ -25,14 +25,14 @@ export default function NewsDetail({ newsItem, isOpen, onClose }) {
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
                         drag="x"
                         dragConstraints={{ left: 0, right: 0 }}
-                        dragElastic={{ left: 0, right: 0.2 }}
+                        dragElastic={{ left: 0, right: 0.3 }}
                         onDragEnd={(e, info) => {
-                            // Swipe Left-to-Right to Close
-                            if (info.offset.x > 50) {
+                            // Swipe Left-to-Right to Close (reduced threshold for mobile)
+                            if (info.offset.x > 80) {
                                 onClose();
                             }
                         }}
-                        className="w-full h-full bg-gray-900 border-l border-white/10 relative overflow-y-auto shadow-2xl"
+                        className="w-full md:w-2/3 lg:w-1/2 h-full bg-gray-900 border-l border-white/10 relative overflow-y-auto shadow-2xl"
                     >
                         {/* Header Image */}
                         <div className="relative h-64 w-full">
