@@ -31,33 +31,36 @@ export default function Sidebar() {
             <AnimatePresence>
                 {isSidebarOpen && (
                     <>
-                        {/* Backdrop */}
+                        {/* Backdrop - High Z-index and interactive */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 0.5 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black z-50"
+                            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
                             onClick={closeSidebar}
                         />
 
-                        {/* Sidebar */}
+                        {/* Sidebar Panel - Higher Z-index than backdrop */}
                         <motion.div
                             initial={{ x: "-100%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "-100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 300 }} // Smooth transition
-                            className="fixed top-0 left-0 h-full w-full max-w-xs sm:w-80 bg-gray-900 border-r border-white/10 z-50 flex flex-col shadow-2xl"
+                            className="fixed top-0 left-0 h-full w-full max-w-xs sm:w-80 bg-gray-900 border-r border-white/10 z-[150] flex flex-col shadow-2xl"
                         >
-                            <div className="p-4 border-b border-white/10 flex justify-between items-center">
-                                <h2 className="text-xl font-bold text-white">
-                                    SWIPE<span className="text-red-500">NEWS</span>
-                                </h2>
-                                <button onClick={closeSidebar} className="text-gray-400 hover:text-white">
-                                    <X size={24} />
-                                </button>
+                            {/* Header Removed to prevent overlap with main Navbar */}
+                            <div className="p-6 pt-8 flex flex-col gap-2">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-xl font-bold text-white tracking-wider">
+                                        MENU
+                                    </h2>
+                                    <button onClick={closeSidebar} className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                                        <X size={24} />
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="flex flex-col p-4 gap-2">
+                            <div className="flex flex-col gap-2">
                                 {navItems.map((item) => (
                                     <Link
                                         key={item.path}

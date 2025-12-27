@@ -11,31 +11,36 @@ export default function Home() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [showDetail, setShowDetail] = useState(false);
 
-    // Drag constraints (Vertical)
+    // Drag constraints (Vertical) - Velocity-based detection
     const handleDragEnd = (event, info) => {
-        const threshold = 50; // Reduced for better mobile sensitivity (was 80px)
+        const swipeThreshold = 50; // Distance threshold
+        const velocityThreshold = 500; // Velocity threshold for flick detection
 
-        // Only trigger vertical swipe if horizontal movement is small (prevent diagonal accidental swipes)
-        if (Math.abs(info.offset.x) < 50) {
-            if (info.offset.y < -threshold) {
-                // Swiped Up -> Next
+        // Check both distance AND velocity for more natural feel
+        const shouldSwipe = Math.abs(info.offset.y) > swipeThreshold || Math.abs(info.velocity.y) > velocityThreshold;
+
+        // Only trigger vertical swipe if horizontal movement is small
+        if (Math.abs(info.offset.x) < 50 && shouldSwipe) {
+            if (info.offset.y < 0 || info.velocity.y < -velocityThreshold) {
+                // Swiped Up or Flicked Up -> Next
                 if (currentIndex < news.length - 1) {
                     setCurrentIndex((prev) => prev + 1);
                 }
-            } else if (info.offset.y > threshold) {
-                // Swiped Down -> Prev
+            } else if (info.offset.y > 0 || info.velocity.y > velocityThreshold) {
+                // Swiped Down or Flicked Down -> Prev
                 if (currentIndex > 0) {
                     setCurrentIndex((prev) => prev - 1);
                 }
             }
         }
+        // If swipe doesn't meet threshold, framer-motion will snap back automatically
     };
 
     // Horizontal Swipe Handler (Right-to-Left for Details)
-    // Note: Left-to-Right for Sidebar is handled globally in Sidebar.jsx trigger
     const handlePanEnd = (event, info) => {
-        // Swipe Right-to-Left (Open Details) - reduced threshold for mobile
-        if (info.offset.x < -60 && Math.abs(info.offset.y) < 50) {
+        // Swipe Right-to-Left (Open Details) - velocity-aware
+        const shouldOpenDetails = info.offset.x < -60 || info.velocity.x < -500;
+        if (shouldOpenDetails && Math.abs(info.offset.y) < 50) {
             setShowDetail(true);
         }
     };
@@ -54,18 +59,21 @@ export default function Home() {
                     className="h-full w-full hw-accelerate"
                     drag="y"
                     dragConstraints={{ top: 0, bottom: 0 }}
-                    dragElastic={0.2}
+                    dragElastic={0.05} // Stiffer elastic for cleaner feeling
                     dragMomentum={false}
                     dragDirectionLock
+                    dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
                     onDragEnd={handleDragEnd}
                     onPanEnd={handlePanEnd}
                     animate={{ y: -currentIndex * window.innerHeight }}
+                    // Force re-render on index change to reset drag state if needed
+                    key={currentIndex}
                     transition={{
                         type: "spring",
-                        damping: 35,
-                        stiffness: 400,
+                        damping: 30,
+                        stiffness: 350,
                         mass: 0.5,
-                        restDelta: 0.01
+                        restDelta: 0.001 // Settle faster
                     }}
                 >
                     {news.map((item, index) => (
@@ -76,8 +84,10 @@ export default function Home() {
                 </motion.div>
             </div>
 
-            {/* 3 Dots Navigation Indicator & Controls */}
-            <div className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-3 z-[200] pb-safe">
+            {/* 3 Dots Navigation Indicator & Controls - Always Visible */}
+            <div
+                className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-3 z-[200] pb-safe"
+            >
                 {/* Left Dot (Sidebar) */}
                 <button
                     onClick={() => {

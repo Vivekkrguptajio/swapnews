@@ -35,17 +35,17 @@ export default function NewsDetail({ newsItem, isOpen, onClose }) {
                         className="w-full md:w-2/3 lg:w-1/2 h-full bg-gray-900 border-l border-white/10 relative overflow-y-auto shadow-2xl"
                     >
                         {/* Header Image */}
-                        <div className="relative h-64 w-full">
+                        <div className="relative h-64 w-full shrink-0">
                             <img
                                 src={newsItem.imageUrl}
                                 alt={newsItem.title}
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
                         </div>
 
-                        {/* Text Content */}
-                        <div className="p-6">
+                        {/* Text Content - Scrollable Area */}
+                        <div className="p-6 pb-24 overflow-y-auto h-full">
                             <h1 className="text-2xl font-bold text-white mb-4 leading-tight font-serif">
                                 {newsItem.title}
                             </h1>
