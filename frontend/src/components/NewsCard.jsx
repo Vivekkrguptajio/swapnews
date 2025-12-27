@@ -38,98 +38,100 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                     loading={index === 0 ? "eager" : "lazy"}
                 />
                 {/* Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30 pointer-events-none" />
+                <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/80 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
             </div>
 
-            {/* Top Category Badge */}
-            <div className="absolute top-6 left-4 z-10">
-                <span className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded uppercase tracking-wide">
+            {/* Top Category Badge - Reference Style (Pill) */}
+            <div className="absolute top-3.5 left-4 z-50">
+                <span className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/10 text-white text-[11px] font-bold rounded-full uppercase tracking-wider shadow-lg">
                     {newsItem.category || "URBAN"}
                 </span>
             </div>
 
+            {/* Title & Source - Moved to Top */}
+            <div className="absolute top-20 left-4 right-16 z-[25]">
+                <h2 className="text-white text-[28px] font-bold leading-[1.1] drop-shadow-lg font-sans tracking-tight mb-2">
+                    {newsItem.title}
+                </h2>
+                {/* Source + Time - Moved Below Title */}
+                <div className="flex items-center gap-2 text-[12px] text-gray-300 uppercase tracking-wider font-medium opacity-90">
+                    <span className="text-[#FF7F50] font-bold">URBAN CHRONICLE</span>
+                    <span className="text-gray-400">•</span>
+                    <span>2 HOURS AGO</span>
+                </div>
+            </div>
+
             {/* Right Side Actions (Minimal) */}
-            <div className="absolute right-3 bottom-32 flex flex-col items-center gap-5 z-[20]">
-                {/* Like */}
+            <div className="absolute right-4 bottom-32 flex flex-col items-center gap-6 z-[20]">
+                {/* Like Button */}
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={() => toggleLike(newsItem)}
-                        className="p-2 transition-transform active:scale-90"
+                        className="p-2 transition-transform active:scale-75"
                     >
                         <Heart
-                            size={28}
-                            className={`filter drop-shadow-lg transition-all ${liked ? "fill-red-500 text-red-500" : "text-white"}`}
-                            strokeWidth={liked ? 0 : 2.5}
+                            size={30}
+                            className={`transition-colors drop-shadow-md ${liked ? "fill-red-500 text-red-500" : "text-white"}`}
+                            strokeWidth={liked ? 0 : 2}
                         />
                     </button>
-                    <span className="text-white text-xs font-semibold drop-shadow-md">
+                    <span className="text-white text-xs font-medium drop-shadow-md">
                         {liked ? "1.2k" : "Like"}
                     </span>
                 </div>
 
-                {/* Bookmark */}
+                {/* Bookmark Button */}
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={() => toggleBookmark(newsItem)}
-                        className="p-2 transition-transform active:scale-90"
+                        className="p-2 transition-transform active:scale-75"
                     >
                         <Bookmark
-                            size={28}
-                            className={`filter drop-shadow-lg transition-all ${bookmarked ? "fill-white text-white" : "text-white"}`}
-                            strokeWidth={2.5}
+                            size={30}
+                            className={`transition-colors drop-shadow-md ${bookmarked ? "fill-white text-white" : "text-white"}`}
+                            strokeWidth={2}
                         />
                     </button>
-                    <span className="text-white text-xs font-semibold drop-shadow-md">Save</span>
+                    <span className="text-white text-xs font-medium drop-shadow-md">Save</span>
                 </div>
 
-                {/* Share */}
+                {/* Share Button */}
                 <div className="flex flex-col items-center gap-1">
                     <button
                         onClick={handleShare}
-                        className="p-2 transition-transform active:scale-90"
+                        className="p-2 transition-transform active:scale-75"
                     >
-                        <Share2 size={28} className="text-white filter drop-shadow-lg" strokeWidth={2.5} />
+                        <Share2 size={30} className="text-white drop-shadow-md" strokeWidth={2} />
                     </button>
-                    <span className="text-white text-xs font-semibold drop-shadow-md">Share</span>
+                    <span className="text-white text-xs font-medium drop-shadow-md">Share</span>
                 </div>
 
                 {/* More Options */}
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-1 pt-2">
                     <button className="p-2 transition-transform active:scale-90">
-                        <MoreHorizontal size={28} className="text-white filter drop-shadow-lg" strokeWidth={2.5} />
+                        <MoreHorizontal size={30} className="text-white drop-shadow-md" strokeWidth={2} />
                     </button>
                 </div>
             </div>
 
-            {/* Bottom Content - YouTube Shorts Style */}
-            <div className="absolute left-0 bottom-0 w-full p-4 pb-24 z-[15] pr-20">
+            {/* Bottom Content - Only Description & Follow */}
+            <div className="absolute left-0 bottom-0 w-full p-5 pb-24 z-[15] pr-16 bg-gradient-to-t from-black via-black/40 to-transparent">
 
-                {/* Title */}
-                <h2 className="text-white text-xl font-bold leading-tight mb-3 drop-shadow-lg">
-                    {newsItem.title}
-                </h2>
-
-                {/* Source + Time */}
-                <div className="flex items-center gap-2 text-xs text-white/80 mb-3 uppercase tracking-wide font-medium">
-                    <span>URBAN CHRONICLE</span>
-                    <span>•</span>
-                    <span>2 HOURS AGO</span>
-                </div>
-
-                {/* Description */}
-                <p className="text-white/90 text-sm leading-relaxed mb-4 line-clamp-2">
+                {/* Description - Bottom Floating */}
+                <p className="text-white/90 text-[14px] leading-relaxed line-clamp-2 font-light drop-shadow-md">
                     {newsItem.description}
                 </p>
 
-                {/* Profile Section with Follow Button */}
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                {/* Profile Section with Follow Button - Bottom */}
+                <div className="flex items-center gap-3 mt-4">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold text-xs shadow-lg ring-2 ring-black">
                         SN
                     </div>
                     <div className="flex-1">
-                        <p className="text-white font-semibold text-sm">SwipeNews</p>
+                        <p className="text-white font-semibold text-sm drop-shadow-md">SwipeNews</p>
                     </div>
-                    <button className="px-4 py-1.5 bg-white text-black text-xs font-bold rounded-full hover:bg-white/90 transition-colors">
+                    <button className="px-5 py-1.5 bg-white text-black text-xs font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg">
                         Follow
                     </button>
                 </div>
