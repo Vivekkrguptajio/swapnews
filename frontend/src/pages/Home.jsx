@@ -59,7 +59,7 @@ export default function Home() {
     const currentNews = news[currentIndex];
 
     return (
-        <div className="h-screen w-full bg-black relative overflow-hidden">
+        <div className="h-[100dvh] w-full bg-black relative overflow-hidden">
             <Navbar />
 
             {/* Refresh Loader Overlay */}
@@ -81,7 +81,7 @@ export default function Home() {
                     dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
                     onDragEnd={handleDragEnd}
                     onPanEnd={handlePanEnd}
-                    animate={{ y: -currentIndex * window.innerHeight }}
+                    animate={{ y: `-${currentIndex * 100}%` }}
                     // Force re-render on index change to reset drag state if needed
                     key={currentIndex}
                     transition={{
@@ -93,7 +93,7 @@ export default function Home() {
                     }}
                 >
                     {news.map((item, index) => (
-                        <div key={item._id} className="h-screen w-full relative hw-accelerate">
+                        <div key={item._id} className="h-full w-full relative hw-accelerate">
                             <NewsCard newsItem={item} index={index} currentIndex={currentIndex} />
                         </div>
                     ))}
