@@ -145,7 +145,7 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 </p>
 
                 {/* Profile Section with Follow Button - Bottom */}
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-1 mt-2">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold text-xs shadow-lg ring-2 ring-black">
                         SN
                     </div>
