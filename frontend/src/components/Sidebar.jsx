@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Bookmark, ShieldCheck, X, LogIn, UserPlus, LogOut, Clock } from "lucide-react";
+import { Home, Bookmark, ShieldCheck, X, LogIn, UserPlus, LogOut, Clock, LayoutDashboard } from "lucide-react";
 import { useNews } from "../context/NewsContext";
 import { useState, useEffect } from "react";
 import api from "../utils/api";
@@ -24,12 +24,16 @@ export default function Sidebar() {
         { path: "/", label: "Home", icon: <Home size={24} /> },
         ...(user ? [
             { path: "/bookmarks", label: "Saved", icon: <Bookmark size={24} /> },
-            {
-                path: publisherStatus === "pending" ? "#" : "/publisher-guidelines",
-                label: publisherStatus === "pending" ? "Application Pending" : "Become Publisher",
-                icon: publisherStatus === "pending" ? <Clock size={24} className="text-yellow-500" /> : <ShieldCheck size={24} />,
-                disabled: publisherStatus === "pending"
-            }
+            ...(user.isPublisher ? [
+                { path: "/publisher-dashboard", label: "Publisher Studio", icon: <LayoutDashboard size={24} className="text-red-500" /> }
+            ] : [
+                {
+                    path: publisherStatus === "pending" ? "#" : "/publisher-guidelines",
+                    label: publisherStatus === "pending" ? "Application Pending" : "Become Publisher",
+                    icon: publisherStatus === "pending" ? <Clock size={24} className="text-yellow-500" /> : <ShieldCheck size={24} />,
+                    disabled: publisherStatus === "pending"
+                }
+            ])
         ] : []),
     ];
 

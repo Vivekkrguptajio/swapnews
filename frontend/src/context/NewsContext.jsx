@@ -82,10 +82,26 @@ export const NewsProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     // Check for logged in user on mount
+    // Check for logged in user on mount and refresh data
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
+        const token = localStorage.getItem("token");
+
         if (storedUser) {
             setUser(JSON.parse(storedUser));
+        }
+
+        if (token) {
+            api.defaults.headers.common["Authorization"] = token;
+            api.get("/auth/me")
+                .then(res => {
+                    setUser(res.data);
+                    localStorage.setItem("user", JSON.stringify(res.data));
+                })
+                .catch(err => {
+                    console.error("Session expired or invalid", err);
+                    logout();
+                });
         }
     }, []);
 

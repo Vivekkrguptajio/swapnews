@@ -6,12 +6,24 @@ import Navbar from "../components/Navbar";
 import BottomBar from "../components/BottomBar";
 import NewsDetail from "../components/NewsDetail";
 import { ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-    const { news, loading, openSidebar, closeSidebar, isSidebarOpen, showDetail, setShowDetail, fetchNews } = useNews();
+    const { news, loading, openSidebar, closeSidebar, isSidebarOpen, showDetail, setShowDetail, fetchNews, user } = useNews();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const containerRef = useRef(null);
+    const navigate = useNavigate();
+
+    // Redirect Admin to Dashboard logic
+    useEffect(() => {
+        if (user) {
+            if (user.isAdmin) {
+                navigate("/admin");
+            }
+            // Publishers can view Home/News Feed, no forced redirect
+        }
+    }, [user, navigate]);
 
     // Intersection Observer to track current index
     useEffect(() => {

@@ -16,6 +16,8 @@ export default function Login() {
         if (res.success) {
             if (res.user?.isAdmin) {
                 navigate("/admin");
+            } else if (res.user?.isPublisher) {
+                navigate("/publisher-dashboard");
             } else {
                 navigate("/");
             }

@@ -9,6 +9,8 @@ import PublisherRequestForm from "./pages/PublisherRequestForm";
 
 import Sidebar from "./components/Sidebar";
 
+import PublisherDashboard from "./pages/PublisherDashboard";
+
 function App() {
   return (
     <>
@@ -19,6 +21,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/publisher-guidelines" element={<PublisherGuidelines />} />
         <Route path="/publisher-application" element={<PublisherRequestForm />} />
+        <Route path="/publisher-dashboard" element={<PublisherDashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
