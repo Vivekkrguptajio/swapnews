@@ -25,6 +25,22 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
         }
     };
 
+    // Dynamic Time Ago Helper
+    const getTimeAgo = (date) => {
+        const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+        let interval = seconds / 31536000;
+        if (interval > 1) return Math.floor(interval) + " YEARS AGO";
+        interval = seconds / 2592000;
+        if (interval > 1) return Math.floor(interval) + " MONTHS AGO";
+        interval = seconds / 86400;
+        if (interval > 1) return Math.floor(interval) + " DAYS AGO";
+        interval = seconds / 3600;
+        if (interval > 1) return Math.floor(interval) + " HOURS AGO";
+        interval = seconds / 60;
+        if (interval > 1) return Math.floor(interval) + " MIN AGO";
+        return "JUST NOW";
+    };
+
     // Optimization: Don't render content if far from viewport
     const isVisible = index === currentIndex || index === currentIndex - 1 || index === currentIndex + 1;
     if (!isVisible) return null;
@@ -58,9 +74,9 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 </h2>
                 {/* Source + Time - Moved Below Title */}
                 <div className="flex items-center gap-2 text-[12px] text-gray-300 uppercase tracking-wider font-medium opacity-90">
-                    <span className="text-[#FF7F50] font-bold">URBAN CHRONICLE</span>
+                    <span className="text-[#FF7F50] font-bold">{newsItem.location || "GLOBAL"}</span>
                     <span className="text-gray-400">•</span>
-                    <span>2 HOURS AGO</span>
+                    <span>{getTimeAgo(newsItem.createdAt)}</span>
                 </div>
             </div>
 
@@ -123,8 +139,9 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
             <div className="absolute left-0 bottom-0 w-full p-5 pb-24 z-[15] pr-16 bg-gradient-to-t from-black via-black/40 to-transparent">
 
                 {/* Description - Bottom Floating */}
-                <p className="text-white/90 text-[14px] leading-relaxed line-clamp-2 font-light drop-shadow-md">
-                    {newsItem.description}
+                <p className="text-white/90 text-[14px] leading-relaxed font-light drop-shadow-md">
+                    {newsItem.description?.split(" ").slice(0, 30).join(" ")}
+                    {newsItem.description?.split(" ").length > 30 ? "..." : ""}
                 </p>
 
                 {/* Profile Section with Follow Button - Bottom */}

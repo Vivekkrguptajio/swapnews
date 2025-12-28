@@ -13,7 +13,8 @@ export default function PublisherDashboard() {
         title: "",
         description: "",
         imageUrl: "",
-        category: "General"
+        category: "General",
+        location: ""
     });
 
     const handleChange = (e) => {
@@ -39,7 +40,7 @@ export default function PublisherDashboard() {
             await api.post("/news", formData);
             alert("News Added!");
             setShowForm(false);
-            setFormData({ title: "", description: "", imageUrl: "", category: "General" });
+            setFormData({ title: "", description: "", imageUrl: "", category: "General", location: "" });
             fetchNews();
         } catch (err) {
             alert("Error adding news");
@@ -150,19 +151,29 @@ export default function PublisherDashboard() {
                                 )}
                             </div>
 
-                            <select
-                                name="category"
-                                value={formData.category}
-                                onChange={handleChange}
-                                className="bg-black border border-zinc-700 p-4 rounded-xl text-white focus:outline-none focus:border-red-600 transition-colors appearance-none"
-                            >
-                                <option value="General">General</option>
-                                <option value="Tech">Tech</option>
-                                <option value="Business">Business</option>
-                                <option value="Entertainment">Entertainment</option>
-                                <option value="Sports">Sports</option>
-                                <option value="Politics">Politics</option>
-                            </select>
+                            <div className="flex gap-2">
+                                <input
+                                    name="location"
+                                    placeholder="Location (e.g. New York)"
+                                    value={formData.location}
+                                    onChange={handleChange}
+                                    className="bg-black border border-zinc-700 p-4 rounded-xl text-white focus:outline-none focus:border-red-600 transition-colors font-bold flex-1"
+                                />
+                                <select
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleChange}
+                                    className="bg-black border border-zinc-700 p-4 rounded-xl text-white focus:outline-none focus:border-red-600 transition-colors appearance-none"
+                                >
+                                    <option value="General">General</option>
+                                    <option value="Tech">Tech</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Politics">Politics</option>
+                                </select>
+                            </div>
+
                             <button type="submit" className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl font-bold mt-2 uppercase tracking-wide transition-all active:scale-95 shadow-lg shadow-red-900/20">
                                 Publish Now
                             </button>

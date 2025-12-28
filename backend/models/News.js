@@ -21,6 +21,10 @@ const NewsSchema = new mongoose.Schema({
     type: String,
     default: "General",
   },
+  location: {
+    type: String,
+    default: "Global",
+  },
   source: {
     type: String,
     default: "SwipeNews",
