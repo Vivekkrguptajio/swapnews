@@ -58,10 +58,43 @@ export default function Home() {
         };
     }, [news]);
 
-    // Pull to Refresh Logic (Basic implementation for Scroll Snap)
+    // Strict One-Page Scroll Control
+    const scrollTimeoutRef = useRef(null);
+    const isScrollingRef = useRef(false);
+    const lastScrollTop = useRef(0);
+
     const handleScroll = (e) => {
-        // logic for pull to refresh can be added here if needed, 
-        // but native scroll snap usually handles physics well.
+        if (isScrollingRef.current) return;
+
+        const container = e.target;
+        const currentScrollTop = container.scrollTop;
+        const scrollDelta = currentScrollTop - lastScrollTop.current;
+
+        // Ignore very small scrolls (noise)
+        if (Math.abs(scrollDelta) < 10) return;
+
+        // Clear existing timeout
+        if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+        }
+
+        // Debounce and snap to nearest page
+        scrollTimeoutRef.current = setTimeout(() => {
+            const containerHeight = container.clientHeight;
+            const targetIndex = Math.round(currentScrollTop / containerHeight);
+            const targetScroll = targetIndex * containerHeight;
+
+            isScrollingRef.current = true;
+            container.scrollTo({
+                top: targetScroll,
+                behavior: 'smooth'
+            });
+
+            setTimeout(() => {
+                isScrollingRef.current = false;
+                lastScrollTop.current = targetScroll;
+            }, 300);
+        }, 50);
     };
 
     if (loading) return (
