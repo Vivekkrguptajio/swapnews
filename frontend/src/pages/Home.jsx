@@ -97,30 +97,31 @@ export default function Home() {
                 ))}
 
                 {/* Empty snap point to trigger End of Feed card */}
+                {/* End of Feed Card - Inline Scrollable */}
                 <div
                     data-index={news.length}
-                    className="news-item h-full w-full snap-start relative bg-black"
-                />
-            </div>
+                    className="news-item h-full w-full snap-start relative bg-black flex items-center justify-center"
+                >
+                    <div className="flex flex-col items-center gap-6 p-8 opacity-80 scale-90 md:scale-100 transition-all duration-500">
+                        <div className="p-4 rounded-full bg-white/5 border border-white/10 shadow-2xl shadow-red-500/10">
+                            <ChevronDown className="animate-bounce text-red-500" size={40} />
+                        </div>
+                        <h2 className="text-2xl font-black italic text-white tracking-tighter">YOU'RE CAUGHT <span className="text-red-600">UP</span></h2>
+                        <p className="text-gray-500 text-sm font-medium tracking-widest uppercase">No more news for now</p>
 
-            {/* End of Feed Card - Separate Overlay */}
-            {currentIndex >= news.length && (
-                <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-[100]">
-                    <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 flex flex-col items-center gap-4 pointer-events-auto shadow-2xl">
-                        <ChevronDown className="animate-bounce text-white/50" size={32} />
-                        <span className="text-sm font-medium text-white/70 uppercase tracking-widest">End of Feed</span>
                         <button
                             onClick={() => {
                                 setIsRefreshing(true);
                                 fetchNews().finally(() => setIsRefreshing(false));
                             }}
-                            className="px-8 py-3 bg-red-500 hover:bg-red-600 rounded-full text-sm font-bold text-white transition-colors shadow-lg"
+                            className="group relative px-8 py-3 bg-white text-black rounded-full font-black text-xs uppercase tracking-widest hover:bg-gray-200 transition-all active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                         >
-                            {isRefreshing ? "Refreshing..." : "Tap to Refresh"}
+                            {isRefreshing ? "Refreshing..." : "Start Over"}
+                            <span className="absolute inset-0 rounded-full border border-white/50 opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all"></span>
                         </button>
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* 3 Dots Navigation - Always Visible & Top Layer */}
             <div className="fixed bottom-6 left-0 w-full flex justify-center items-center gap-3 z-[9999] pb-safe pointer-events-none">
