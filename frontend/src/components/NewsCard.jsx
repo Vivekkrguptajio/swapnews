@@ -145,15 +145,15 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
                 </p>
 
                 {/* Profile Section with Follow Button - Bottom */}
-                <div className="flex items-center gap-3 mt-4">
+                <div className="flex items-center gap-2 mt-2">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold text-xs shadow-lg ring-2 ring-black">
                         SN
                     </div>
-                    <div className="flex-1">
+                    <div>
                         <p className="text-white font-semibold text-sm drop-shadow-md">SwipeNews</p>
                     </div>
                     {user && (
-                        <button className="px-5 py-1.5 bg-white text-black text-xs font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg">
+                        <button className="px-4 py-1.5 bg-white text-black text-xs font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg">
                             Follow
                         </button>
                     )}
