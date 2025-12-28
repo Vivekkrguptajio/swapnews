@@ -68,7 +68,7 @@ export default function NewsCard({ newsItem, index, currentIndex }) {
             </div>
 
             {/* Title & Source - Moved to Top */}
-            <div className="absolute top-20 left-4 right-16 z-[25]">
+            <div className="absolute top-16 left-4 right-16 z-[25]">
                 <h2 className="text-white text-[28px] font-bold leading-[1.1] drop-shadow-lg font-sans tracking-tight mb-2">
                     {newsItem.title}
                 </h2>

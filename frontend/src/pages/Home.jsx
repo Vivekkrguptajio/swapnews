@@ -83,7 +83,7 @@ export default function Home() {
             {/* Scroll Snap Container */}
             <div
                 ref={containerRef}
-                className="h-full w-full overflow-y-scroll snap-y snap-mandatory snap-always scroll-smooth no-scrollbar"
+                className="h-full w-full overflow-y-scroll snap-y snap-mandatory snap-always overscroll-contain no-scrollbar"
                 onScroll={handleScroll}
             >
                 {news.map((item, index) => (
