@@ -13,7 +13,6 @@ body {
   /* Prevent pull-to-refresh on mobile */
   -webkit-overflow-scrolling: touch;
   /* iOS momentum scrolling */
-  scroll-behavior: smooth;
 }
 
 /* Hide Scrollbar */

@@ -84,6 +84,7 @@ export default function Home() {
             <div
                 ref={containerRef}
                 className="h-full w-full overflow-y-scroll snap-y snap-mandatory snap-always overscroll-y-none touch-pan-y no-scrollbar"
+                style={{ willChange: 'scroll-position', transform: 'translate3d(0,0,0)' }}
                 onScroll={handleScroll}
             >
                 {news.map((item, index) => (
@@ -91,6 +92,7 @@ export default function Home() {
                         key={item._id}
                         data-index={index}
                         className="news-item h-full w-full snap-start relative bg-black"
+                        style={{ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' }}
                     >
                         <NewsCard newsItem={item} index={index} currentIndex={currentIndex} />
                     </div>
